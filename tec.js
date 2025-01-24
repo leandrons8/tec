@@ -26,12 +26,6 @@ function renderBody(){
     const container = document.createElement("div")
     container.className = "container text-center"
 
-    // const row = document.createElement("div")
-    // row.className = "row py-3"
-
-    // const col1 = document.createElement("div")
-    // col1.className = "col-6"
-
     const table = document.createElement("table")
     table.className = "table align-middle"
 
@@ -65,9 +59,6 @@ function renderBody(){
 
     const tbody = document.createElement("tbody")
 
-    // const col2 = document.createElement("div")
-    // col2.className = "col-6 text-center"
-
     const tec = document.createElement("p")
     tec.className = "text-center fs-1"
 
@@ -75,13 +66,9 @@ function renderBody(){
 
     body.append(nav, container)
     container.append(table, tec, canvas)
-    // container.append(row)
-    // row.append(col1, col2)
-    // col1.append(table)
     table.append(thead, tbody)
     thead.append(trtitle)
     trtitle.append(name, thickness, id, od, k, actions)
-    // col2.append(canvas)
 }
 
 function renderNav(){
@@ -302,12 +289,6 @@ function renderCircle(tec){
         ctx.arc(200, 200, scale*layers[0].id/2, 0, 2*Math.PI)
         ctx.fillStyle = "#000000"
         ctx.fill()
-
-        // ctx.font = "30px Arial";
-        // ctx.textAlign = "center"
-        // ctx.textBaseline = "top"
-        // ctx.fillStyle = "white"
-        // ctx.fillText("TEC = " + tec.toExponential(4), 200, 0)
     }
 
     oldcanvas.parentNode.replaceChild(newcanvas, oldcanvas)
@@ -331,6 +312,7 @@ function update(id){
     tec = tec[0]  + (tec[1] ? "\\times 10^" + tec[1] : "")
     tec = "\\( TEC = " + tec + " { W \\over { m \\times K } } \\)"
     tectext.innerText = tec
+    MathJax.typeset()
     scale = 400/od
     renderTable()
     renderCircle(tec)
