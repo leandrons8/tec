@@ -51,7 +51,7 @@ function renderBody(){
 
     const k = document.createElement("th")
     k.scope = "col"
-    k.innerHTML = "Thermal Conductivity \\( \\left( W \\over { m \\times K } \\right) \\)"
+    k.innerHTML = "Thermal Conductivity \\( \\left( \\frac{W}{m \\times K} \\right) \\)"
 
     const actions = document.createElement("th")
     actions.scope = "col"
@@ -64,7 +64,15 @@ function renderBody(){
 
     const canvas = document.createElement("canvas")
 
-    body.append(nav, container)
+    const modalt = renderModal("modalt", "Enter a thickness greater than 0")
+
+    const modalk = renderModal("modalk", "Enter a thermal conductivity greater than 0")
+
+    const modaln = renderModal("modaln", "Enter a name different from the existing ones")
+
+    const modald = renderModal("modald", "Enter a inner diameter greater than 0")
+
+    body.append(nav, container, modalt, modalk, modaln, modald)
     container.append(table, tec, canvas)
     table.append(thead, tbody)
     thead.append(trtitle)
@@ -120,7 +128,8 @@ function renderTableRow(i){
             layers[i].thickness = num
             update()
         } else {
-            window.alert("Enter a thickness greater than 0")
+            const modal = new bootstrap.Modal("#modalt")
+            modal.show()
             layers[i].thickness = 1
             update()
         }
@@ -150,7 +159,8 @@ function renderTableRow(i){
             layers[i].k = num
             update()
         } else {
-            window.alert("Enter a thermal conductivity greater than 0")
+            const modal = new bootstrap.Modal("#modalk")
+            modal.show()
             layers[i].k = 1
             update()
         }
@@ -216,7 +226,8 @@ function renderTableRow(i){
     } else {
         name.onchange = function (){
             if (layers.map(layer => layer.name).includes(this.value)){
-                window.alert("Enter a name different from the existing ones")
+                const modal = new bootstrap.Modal("#modaln")
+                modal.show()
                 this.value = null
             } else if (layers.length){
                 layers.push({name: this.value, thickness: 1, k: 1})
@@ -240,7 +251,8 @@ function renderTableRow(i){
             if (num > 0){
                 update(num)
             } else {
-                window.alert("Enter a inner diameter greater than 0")
+                const modal = new bootstrap.Modal("#modald")
+                modal.show()
                 update(1)
             }
         }
@@ -294,6 +306,46 @@ function renderCircle(tec){
     oldcanvas.parentNode.replaceChild(newcanvas, oldcanvas)
 }
 
+function renderModal(id, text){
+    const modal = document.createElement("div")
+    modal.className = "modal"
+    modal.tabIndex = "-1"
+    modal.id = id
+    
+    const dialog = document.createElement("div")
+    dialog.className = "modal-dialog"
+    
+    const content = document.createElement("div")
+    content.className = "modal-content"
+
+    const header = document.createElement("div")
+    header.className = "modal-header"
+
+    const title = document.createElement("h5")
+    title.className = "modal-title"
+    title.innerText = "Alert"
+
+    const close = document.createElement("button")
+    close.type = "button"
+    close.className = "btn-close"
+    close.dataset.bsDismiss="modal"
+    close.ariaLabel = "Close"
+
+    const body = document.createElement("div")
+    body.className = "modal-body"
+
+    const bodytext = document.createElement("p")
+    bodytext.innerText = text
+    
+    modal.append(dialog)
+    dialog.append(content)
+    content.append(header, body)
+    header.append(title, close)
+    body.append(bodytext)
+
+    return modal
+}
+
 function update(id){
     const tectext = document.getElementsByTagName("p")[0]
     let od = ((id) ? id : Math.min(...layers.map(l => l.id).filter(l => l)))
@@ -310,7 +362,7 @@ function update(id){
     tec = tec.split("e")
     tec[1] = Number(tec[1])
     tec = tec[0]  + (tec[1] ? "\\times 10^" + tec[1] : "")
-    tec = "\\( TEC = " + tec + " { W \\over { m \\times K } } \\)"
+    tec = "$$ TEC = " + tec + " \\frac{W}{m \\times K} $$"
     tectext.innerText = tec
     MathJax.typeset()
     scale = 400/od
