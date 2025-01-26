@@ -59,6 +59,15 @@ function renderBody(){
 
     const tbody = document.createElement("tbody")
 
+    const row = document.createElement("div")
+    row.className = "row align-items-center"
+
+    const col1 = document.createElement("div")
+    col1.className = "col"
+
+    const col2 = document.createElement("div")
+    col2.className = "col"
+
     const tec = document.createElement("p")
     tec.className = "text-center fs-1"
 
@@ -73,10 +82,13 @@ function renderBody(){
     const modald = renderModal("modald", "Enter a inner diameter greater than 0")
 
     body.append(nav, container, modalt, modalk, modaln, modald)
-    container.append(table, tec, canvas)
+    container.append(table, row)
     table.append(thead, tbody)
     thead.append(trtitle)
     trtitle.append(name, thickness, id, od, k, actions)
+    row.append(col1, col2)
+    col1.append(tec)
+    col2.append(canvas)
 }
 
 function renderNav(){
