@@ -18,96 +18,6 @@ const colors = [
 
 scale = 1
 
-function renderBody(){
-    const body = document.body
-
-    const nav = renderNav()
-
-    const container = document.createElement("div")
-    container.className = "container text-center"
-
-    const table = document.createElement("table")
-    table.className = "table align-middle"
-
-    const thead = document.createElement("thead")
-
-    const trtitle = document.createElement("tr")
-
-    const name = document.createElement("th")
-    name.scope = "col"
-    name.innerText = "Name"
-
-    const thickness = document.createElement("th")
-    thickness.scope = "col"
-    thickness.innerText = "Thickness \\( \\left( mm \\right) \\)"
-
-    const id = document.createElement("th")
-    id.scope = "col"
-    id.innerHTML = "&#8960 Inner \\( \\left( mm \\right) \\)"
-
-    const od = document.createElement("th")
-    od.scope = "col"
-    od.innerHTML = "&#8960 Outer \\( \\left( mm \\right) \\)"
-
-    const k = document.createElement("th")
-    k.scope = "col"
-    k.innerHTML = "Thermal Conductivity \\( \\left( \\frac{W}{m \\times K} \\right) \\)"
-
-    const actions = document.createElement("th")
-    actions.scope = "col"
-    actions.innerHTML = "Actions"
-
-    const tbody = document.createElement("tbody")
-
-    const row = document.createElement("div")
-    row.className = "row align-items-center"
-
-    const col1 = document.createElement("div")
-    col1.className = "col"
-
-    const col2 = document.createElement("div")
-    col2.className = "col"
-
-    const tec = document.createElement("p")
-    tec.className = "text-center fs-1"
-
-    const canvas = document.createElement("canvas")
-
-    const modalt = renderModal("modalt", "Enter a thickness greater than 0")
-
-    const modalk = renderModal("modalk", "Enter a thermal conductivity greater than 0")
-
-    const modaln = renderModal("modaln", "Enter a name different from the existing ones")
-
-    const modald = renderModal("modald", "Enter a inner diameter greater than 0")
-
-    body.append(nav, container, modalt, modalk, modaln, modald)
-    container.append(table, row)
-    table.append(thead, tbody)
-    thead.append(trtitle)
-    trtitle.append(name, thickness, id, od, k, actions)
-    row.append(col1, col2)
-    col1.append(tec)
-    col2.append(canvas)
-}
-
-function renderNav(){
-    const nav = document.createElement("nav")
-    nav.className = "navbar sticky-top bg-body-tertiary"
-
-    const navcontainer = document.createElement("div")
-    navcontainer.className = "container"
-
-    const navbrand = document.createElement("span")
-    navbrand.className = "navbar-brand"
-    navbrand.innerText = "TEC - Thermal Exchange Coefficient"
-
-    nav.append(navcontainer)
-    navcontainer.append(navbrand)
-
-    return nav
-}
-
 function renderTable(){
     const tbodyold = document.getElementsByTagName("tbody")[0]
     const tbodynew = document.createElement("tbody")
@@ -318,46 +228,6 @@ function renderCircle(tec){
     oldcanvas.parentNode.replaceChild(newcanvas, oldcanvas)
 }
 
-function renderModal(id, text){
-    const modal = document.createElement("div")
-    modal.className = "modal"
-    modal.tabIndex = "-1"
-    modal.id = id
-    
-    const dialog = document.createElement("div")
-    dialog.className = "modal-dialog"
-    
-    const content = document.createElement("div")
-    content.className = "modal-content"
-
-    const header = document.createElement("div")
-    header.className = "modal-header"
-
-    const title = document.createElement("h5")
-    title.className = "modal-title"
-    title.innerText = "Alert"
-
-    const close = document.createElement("button")
-    close.type = "button"
-    close.className = "btn-close"
-    close.dataset.bsDismiss="modal"
-    close.ariaLabel = "Close"
-
-    const body = document.createElement("div")
-    body.className = "modal-body"
-
-    const bodytext = document.createElement("p")
-    bodytext.innerText = text
-    
-    modal.append(dialog)
-    dialog.append(content)
-    content.append(header, body)
-    header.append(title, close)
-    body.append(bodytext)
-
-    return modal
-}
-
 function update(id){
     const tectext = document.getElementsByTagName("p")[0]
     let od = ((id) ? id : Math.min(...layers.map(l => l.id).filter(l => l)))
@@ -383,5 +253,4 @@ function update(id){
     window.sessionStorage.setItem("layers", JSON.stringify(layers))
 }
 
-renderBody()
 update()
